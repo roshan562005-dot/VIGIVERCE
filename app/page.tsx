@@ -8,6 +8,10 @@ import { VideoPlayer } from "@/components/landing/VideoPlayer";
 export default function Home() {
     return (
         <div className="min-h-screen flex flex-col bg-background">
+            {/* Deployment Verification Banner */}
+            <div className="bg-red-600 text-white py-4 text-center font-bold text-xl animate-pulse">
+                DEPLOYMENT TEST: SEC_GATE_V2_PROD - IF YOU SEE THIS, UPDATE IS LIVE
+            </div>
             {/* Hero Section */}
             <section className="relative overflow-hidden min-h-[90vh] flex items-center">
                 {/* Background Image */}
