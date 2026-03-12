@@ -38,8 +38,12 @@ export default function DashboardLayout({
 
     if (isChecking) {
         return (
-            <div className="flex h-screen w-full items-center justify-center bg-slate-50 dark:bg-slate-950">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <div className="flex h-screen w-full flex-col items-center justify-center bg-slate-50 dark:bg-slate-950">
+                <Loader2 className="h-10 w-10 animate-spin text-primary mb-4" />
+                <div className="flex flex-col items-center gap-2">
+                    <p className="text-sm font-medium animate-pulse text-slate-500">Securing your session...</p>
+                    <p className="text-[10px] text-slate-400 font-mono">Build: SEC_GATE_V2_PROD</p>
+                </div>
             </div>
         );
     }

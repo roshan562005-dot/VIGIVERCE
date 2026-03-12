@@ -13,8 +13,8 @@ export function Header() {
     }, []);
     return (
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-6 lg:h-[60px]">
-            <div className="w-full flex-1">
-                <form>
+            <div className="w-full flex-1 flex items-center gap-4">
+                <form className="flex-1">
                     <div className="relative">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
@@ -24,6 +24,9 @@ export function Header() {
                         />
                     </div>
                 </form>
+                <div className="hidden md:flex items-center px-2 py-1 rounded bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800">
+                    <span className="text-[10px] font-bold text-red-600 dark:text-red-400">SECURITY GATE V2</span>
+                </div>
             </div>
             <Button variant="ghost" size="icon" className="rounded-full overflow-hidden">
                 {user?.avatar ? (
