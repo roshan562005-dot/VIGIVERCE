@@ -96,14 +96,20 @@ export async function searchDrugs(query: string): Promise<DrugInfo[]> {
     // Combine all results
     const allResults = [...fdaResults, ...rxnormResults, ...localResults];
 
-    // Remove duplicates based on name similarity
-    const uniqueResults = allResults.filter((drug, index, self) =>
-        index === self.findIndex(d =>
-            d.name.toLowerCase() === drug.name.toLowerCase() ||
-            (d.genericName && drug.genericName &&
-                d.genericName.toLowerCase() === drug.genericName.toLowerCase())
-        )
-    );
+    // Remove duplicates based on name similarity with robust null-checks
+    const uniqueResults = allResults.filter((drug, index, self) => {
+        if (!drug || !drug.name) return false;
+        
+        return index === self.findIndex(d => {
+            if (!d || !d.name) return false;
+            
+            const nameMatch = d.name.toLowerCase() === drug.name.toLowerCase();
+            const genericMatch = (d.genericName && drug.genericName &&
+                d.genericName.toLowerCase() === drug.genericName.toLowerCase());
+                
+            return nameMatch || genericMatch;
+        });
+    });
 
     return uniqueResults.slice(0, 20); // Limit to 20 results
 }
