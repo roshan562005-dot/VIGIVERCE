@@ -17,11 +17,16 @@ export default function DashboardLayout({
 
     useEffect(() => {
         const checkAuth = async () => {
-            const authenticated = await isAuthenticated();
-            if (!authenticated) {
-                router.push("/login");
-            } else {
-                setIsChecking(false);
+            try {
+                const authenticated = await isAuthenticated();
+                if (!authenticated) {
+                    router.replace("/login");
+                } else {
+                    setIsChecking(false);
+                }
+            } catch (error) {
+                console.error("Auth check failed:", error);
+                router.replace("/login");
             }
         };
         checkAuth();

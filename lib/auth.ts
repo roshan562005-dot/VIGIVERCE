@@ -8,7 +8,7 @@ export interface User {
     provider: 'google' | 'email' | 'phone';
 }
 
-const AUTH_KEY = 'vigiverse_auth_session';
+// No constant needed for Supabase auth key
 
 export const login = async (provider: User['provider'], identifier: string) => {
     if (provider === 'google') {
@@ -43,10 +43,9 @@ export const logout = async () => {
 };
 
 export const getCurrentUser = async (): Promise<User | null> => {
-    const { data: { session } } = await supabase.auth.getSession();
-    const user = session?.user;
+    const { data: { user }, error } = await supabase.auth.getUser();
     
-    if (!user) return null;
+    if (error || !user) return null;
 
     return {
         id: user.id,
