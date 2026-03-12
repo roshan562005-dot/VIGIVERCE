@@ -8,10 +8,17 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Activity, Mail, Phone, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { login, verifyOtp } from "@/lib/auth";
+import { login, verifyOtp, getCurrentUser } from "@/lib/auth";
+import { useEffect } from "react";
 
 export default function LoginPage() {
     const router = useRouter();
+
+    useEffect(() => {
+        getCurrentUser().then(user => {
+            if (user) router.push("/dashboard");
+        });
+    }, [router]);
     const [isLoading, setIsLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -30,9 +37,7 @@ export default function LoginPage() {
             } else if (provider === 'google') {
                 await login('google', '');
             } else {
-                // For email (if we add magic links later) or just basic login
-                await login('email', identifier);
-                router.push("/dashboard");
+                alert("Email login is coming soon! Please use Google or Phone OTP for now.");
             }
         } catch (error: any) {
             console.error("Login error:", error);
