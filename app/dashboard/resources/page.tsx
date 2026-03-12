@@ -32,14 +32,13 @@ export default function ResourcesPage() {
     const [hasSearched, setHasSearched] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSearch = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!query.trim()) return;
+    const executeSearch = async (searchTerm: string) => {
+        if (!searchTerm.trim()) return;
 
         setIsLoading(true);
         setHasSearched(true);
         try {
-            const drugs = await searchDrugs(query);
+            const drugs = await searchDrugs(searchTerm);
             setResults(drugs);
         } catch (error) {
             console.error("Search error:", error);
@@ -47,6 +46,11 @@ export default function ResourcesPage() {
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleSearch = async (e: React.FormEvent) => {
+        e.preventDefault();
+        executeSearch(query);
     };
 
     const getSourceBadge = (source: string) => {
@@ -137,8 +141,11 @@ export default function ResourcesPage() {
                         {["Paracetamol", "Ibuprofen", "Metformin", "Lipitor", "Amoxicillin"].map((drug) => (
                             <button
                                 key={drug}
-                                onClick={() => { setQuery(drug); }}
-                                className="px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-700 dark:hover:text-blue-300 transition-all"
+                                onClick={() => { 
+                                    setQuery(drug); 
+                                    executeSearch(drug);
+                                }}
+                                className="px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-700 dark:hover:text-blue-300 transition-all font-medium border border-transparent hover:border-blue-200"
                             >
                                 {drug}
                             </button>
