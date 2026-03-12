@@ -9,8 +9,11 @@ export default function LeaderboardPage() {
     const [userPoints, setUserPoints] = useState(0);
 
     useEffect(() => {
-        const profile = getUserProfile();
-        setUserPoints(profile.points);
+        const loadData = async () => {
+            const profile = await getUserProfile();
+            setUserPoints(profile.points);
+        };
+        loadData();
     }, []);
 
     // Mock leaderboard data

@@ -8,21 +8,38 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Activity, Mail, Phone, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { login } from "@/lib/auth";
+import { login, verifyOtp } from "@/lib/auth";
 
 export default function LoginPage() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
+    const [otp, setOtp] = useState("");
+    const [showOtpInput, setShowOtpInput] = useState(false);
 
     const handleLogin = async (provider: 'google' | 'email' | 'phone', identifier: string) => {
         setIsLoading(true);
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
-        login(provider, identifier);
-        router.push("/dashboard");
+        try {
+            if (provider === 'phone' && !showOtpInput) {
+                await login('phone', identifier);
+                setShowOtpInput(true);
+            } else if (provider === 'phone' && showOtpInput) {
+                await verifyOtp(identifier, otp);
+                router.push("/dashboard");
+            } else if (provider === 'google') {
+                await login('google', '');
+            } else {
+                // For email (if we add magic links later) or just basic login
+                await login('email', identifier);
+                router.push("/dashboard");
+            }
+        } catch (error: any) {
+            console.error("Login error:", error);
+            alert(error.message || "Authentication failed. Please check your details.");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -91,12 +108,35 @@ export default function LoginPage() {
                                         required
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
+                                        disabled={showOtpInput || isLoading}
                                     />
                                 </div>
-                                <Button className="w-full" onClick={() => handleLogin('phone', phone || '+15550000000')} disabled={isLoading}>
+                                {showOtpInput && (
+                                    <div className="grid gap-2 animate-in fade-in slide-in-from-top-2">
+                                        <Label htmlFor="otp">Verification Code (OTP)</Label>
+                                        <Input
+                                            id="otp"
+                                            type="text"
+                                            placeholder="123456"
+                                            required
+                                            value={otp}
+                                            onChange={(e) => setOtp(e.target.value)}
+                                            disabled={isLoading}
+                                        />
+                                    </div>
+                                )}
+                                <Button className="w-full" onClick={() => handleLogin('phone', phone)} disabled={isLoading}>
                                     {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Phone className="mr-2 h-4 w-4" />}
-                                    Send OTP
+                                    {showOtpInput ? "Verify Code" : "Send OTP"}
                                 </Button>
+                                {showOtpInput && (
+                                    <button 
+                                        onClick={() => setShowOtpInput(false)}
+                                        className="text-xs text-center text-muted-foreground hover:text-primary transition-colors"
+                                    >
+                                        Change Phone Number
+                                    </button>
+                                )}
                             </div>
                         </TabsContent>
                     </Tabs>

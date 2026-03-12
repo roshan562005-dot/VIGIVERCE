@@ -16,10 +16,13 @@ export default function ProfilePage() {
     const [reports, setReports] = useState<any[]>([]);
 
     useEffect(() => {
-        const userProfile = getUserProfile();
-        const userReports = getReports();
-        setProfile(userProfile);
-        setReports(userReports);
+        const loadData = async () => {
+            const userProfile = await getUserProfile();
+            const userReports = await getReports();
+            setProfile(userProfile);
+            setReports(userReports);
+        };
+        loadData();
     }, []);
 
     const achievements = [

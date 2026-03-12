@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { logout } from "@/lib/auth";
 import {
     LayoutDashboard,
     FilePlus,
@@ -40,6 +43,13 @@ const sidebarItems = [
 ];
 
 export function Sidebar() {
+    const router = useRouter();
+    const pathname = usePathname();
+
+    const handleLogout = async () => {
+        await logout();
+        router.push("/");
+    };
     return (
         <div className="flex h-full w-64 flex-col border-r bg-card">
             <div className="flex h-14 items-center border-b px-6">
@@ -56,7 +66,7 @@ export function Sidebar() {
                             href={item.href}
                             className={cn(
                                 "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                                // "bg-muted text-primary" // Active state logic would go here
+                                pathname === item.href && "bg-muted text-primary"
                             )}
                         >
                             <item.icon className="h-4 w-4" />
@@ -66,13 +76,13 @@ export function Sidebar() {
                 </nav>
             </div>
             <div className="mt-auto border-t p-4">
-                <Link
-                    href="/"
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-all hover:text-destructive"
+                <button
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-all hover:text-destructive"
                 >
                     <LogOut className="h-4 w-4" />
                     Logout
-                </Link>
+                </button>
             </div>
         </div>
     );

@@ -2,8 +2,15 @@ import Link from "next/link";
 import { Bell, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { getCurrentUser, User } from "@/lib/auth";
 
 export function Header() {
+    const [user, setUser] = useState<User | null>(null);
+
+    useEffect(() => {
+        getCurrentUser().then(setUser);
+    }, []);
     return (
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-6 lg:h-[60px]">
             <div className="w-full flex-1">
@@ -18,11 +25,15 @@ export function Header() {
                     </div>
                 </form>
             </div>
-            <Button variant="ghost" size="icon" className="rounded-full">
-                <Bell className="h-4 w-4" />
-                <span className="sr-only">Toggle notifications</span>
+            <Button variant="ghost" size="icon" className="rounded-full overflow-hidden">
+                {user?.avatar ? (
+                    <img src={user.avatar} alt={user.name} className="h-8 w-8 object-cover" />
+                ) : (
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+                        {user?.name?.charAt(0) || 'U'}
+                    </div>
+                )}
             </Button>
-            <div className="h-8 w-8 rounded-full bg-primary/10" />
         </header>
     );
 }

@@ -1,3 +1,5 @@
+import { supabase } from './supabase';
+
 export interface User {
     id: string;
     name: string;
@@ -8,33 +10,54 @@ export interface User {
 
 const AUTH_KEY = 'vigiverse_auth_session';
 
-export const login = (provider: User['provider'], identifier: string): User => {
-    const user: User = {
-        id: Date.now().toString(),
-        name: identifier.split('@')[0] || 'User',
-        email: identifier.includes('@') ? identifier : `${identifier}@example.com`,
-        provider,
-        avatar: provider === 'google' ? `https://api.dicebear.com/7.x/avataaars/svg?seed=${identifier}` : undefined
+export const login = async (provider: User['provider'], identifier: string) => {
+    if (provider === 'google') {
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: `${window.location.origin}/dashboard`,
+            },
+        });
+        if (error) throw error;
+    } else if (provider === 'phone') {
+        const { error } = await supabase.auth.signInWithOtp({
+            phone: identifier,
+        });
+        if (error) throw error;
+    }
+};
+
+export const verifyOtp = async (phone: string, token: string) => {
+    const { data, error } = await supabase.auth.verifyOtp({
+        phone,
+        token,
+        type: 'sms',
+    });
+    if (error) throw error;
+    return data.user;
+};
+
+export const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) console.error('Logout error:', error);
+};
+
+export const getCurrentUser = async (): Promise<User | null> => {
+    const { data: { session } } = await supabase.auth.getSession();
+    const user = session?.user;
+    
+    if (!user) return null;
+
+    return {
+        id: user.id,
+        name: user.user_metadata?.full_name || user.email?.split('@')[0] || user.phone || 'User',
+        email: user.email || '',
+        provider: user.app_metadata?.provider as User['provider'],
+        avatar: user.user_metadata?.avatar_url,
     };
-
-    if (typeof window !== 'undefined') {
-        localStorage.setItem(AUTH_KEY, JSON.stringify(user));
-    }
-    return user;
 };
 
-export const logout = () => {
-    if (typeof window !== 'undefined') {
-        localStorage.removeItem(AUTH_KEY);
-    }
-};
-
-export const getCurrentUser = (): User | null => {
-    if (typeof window === 'undefined') return null;
-    const stored = localStorage.getItem(AUTH_KEY);
-    return stored ? JSON.parse(stored) : null;
-};
-
-export const isAuthenticated = (): boolean => {
-    return !!getCurrentUser();
+export const isAuthenticated = async (): Promise<boolean> => {
+    const user = await getCurrentUser();
+    return !!user;
 };

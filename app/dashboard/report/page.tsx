@@ -35,7 +35,7 @@ export default function ReportPage() {
         setAnalysis(analysisResult);
         setIsSubmitting(false);
 
-        saveReport({
+        await saveReport({
             drugName,
             batchNumber: batchNo,
             symptoms,
@@ -45,7 +45,7 @@ export default function ReportPage() {
             aiFeedback: analysisResult.feedback
         });
 
-        updatePoints(Math.floor(analysisResult.score / 2));
+        await updatePoints(Math.floor(analysisResult.score / 2));
         setResult("success");
         setStep(3);
     };

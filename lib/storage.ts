@@ -1,3 +1,5 @@
+import { supabase } from './supabase';
+
 export interface Report {
     id: string;
     drugName: string;
@@ -21,76 +23,140 @@ export interface UserProfile {
 const STORAGE_KEY = 'vigiverse_reports';
 const PROFILE_KEY = 'vigiverse_profile';
 
-export const getUserProfile = (): UserProfile => {
-    if (typeof window === 'undefined') return { name: 'User', points: 0, level: 1, badges: [] };
+export const getUserProfile = async (): Promise<UserProfile> => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { name: 'User', points: 0, level: 1, badges: [] };
 
-    const stored = localStorage.getItem(PROFILE_KEY);
-    if (stored) return JSON.parse(stored);
-
-    // Default profile
-    return { name: 'User', points: 0, level: 1, badges: [] };
-};
-
-export const updatePoints = (pointsToAdd: number) => {
-    const profile = getUserProfile();
-    profile.points += pointsToAdd;
-
-    // Level up logic (e.g., every 100 points)
-    const newLevel = Math.floor(profile.points / 100) + 1;
-    if (newLevel > profile.level) {
-        profile.level = newLevel;
-        // Could trigger a toast notification here in a real app
+    const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+    
+    if (error || !data) {
+        return { 
+            name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User', 
+            points: 0, 
+            level: 1, 
+            badges: [] 
+        };
     }
 
-    localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
-    return profile;
+    return {
+        name: data.full_name || 'User',
+        points: data.points || 0,
+        level: Math.floor((data.points || 0) / 100) + 1,
+        badges: data.badges || []
+    };
 };
 
-export const awardBadge = (badgeId: string) => {
-    const profile = getUserProfile();
-    if (!profile.badges.includes(badgeId)) {
-        profile.badges.push(badgeId);
-        localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+export const updatePoints = async (pointsToAdd: number) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const currentProfile = await getUserProfile();
+    const newPoints = currentProfile.points + pointsToAdd;
+
+    const { data, error } = await supabase
+        .from('profiles')
+        .update({ 
+            points: newPoints,
+            updated_at: new Date().toISOString()
+        })
+        .eq('id', user.id);
+    
+    if (error) throw error;
+    return { ...currentProfile, points: newPoints };
+};
+
+export const awardBadge = async (badgeId: string) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const currentProfile = await getUserProfile();
+    if (!currentProfile.badges.includes(badgeId)) {
+        const newBadges = [...currentProfile.badges, badgeId];
+        const { error } = await supabase
+            .from('profiles')
+            .update({ badges: newBadges })
+            .eq('id', user.id);
+        
+        if (error) throw error;
+        return { ...currentProfile, badges: newBadges };
     }
-    return profile;
+    return currentProfile;
 };
 
-export const getReports = (): Report[] => {
-    if (typeof window === 'undefined') return [];
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
+export const getReports = async (): Promise<Report[]> => {
+    const { data, error } = await supabase
+        .from('reports')
+        .select('*')
+        .order('created_at', { ascending: false });
+    
+    if (error) {
+        console.error("Error fetching reports:", error);
+        return [];
+    }
+
+    return data.map(r => ({
+        id: r.id,
+        drugName: r.drug_name,
+        batchNumber: r.batch_number,
+        symptoms: r.symptoms,
+        severity: r.severity,
+        dateOfOnset: r.date_of_onset,
+        status: r.status as Report['status'],
+        timestamp: new Date(r.created_at).getTime(),
+        aiScore: r.ai_score,
+        aiFeedback: r.ai_feedback
+    }));
 };
 
-export const saveReport = (report: Omit<Report, 'id' | 'timestamp' | 'status'>): Report => {
-    const reports = getReports();
-    const newReport: Report = {
+export const saveReport = async (report: Omit<Report, 'id' | 'timestamp' | 'status'>): Promise<Report> => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("User not authenticated");
+
+    const { data, error } = await supabase
+        .from('reports')
+        .insert({
+            user_id: user.id,
+            drug_name: report.drugName,
+            batch_number: report.batchNumber,
+            symptoms: report.symptoms,
+            severity: report.severity,
+            date_of_onset: report.dateOfOnset,
+            ai_score: report.aiScore,
+            ai_feedback: report.aiFeedback,
+            status: 'Pending'
+        })
+        .select()
+        .single();
+    
+    if (error) throw error;
+
+    return {
         ...report,
-        id: Date.now().toString(),
-        timestamp: Date.now(),
+        id: data.id,
+        timestamp: new Date(data.created_at).getTime(),
         status: 'Pending'
     };
-
-    // Add to beginning of list
-    const updatedReports = [newReport, ...reports];
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedReports));
-    return newReport;
 };
 
-export const updateReportStatus = (id: string, status: Report['status']) => {
-    const reports = getReports();
-    const updatedReports = reports.map(report =>
-        report.id === id ? { ...report, status } : report
-    );
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedReports));
+export const updateReportStatus = async (id: string, status: Report['status']) => {
+    const { error } = await supabase
+        .from('reports')
+        .update({ status })
+        .eq('id', id);
+    
+    if (error) throw error;
 };
 
-export const getStats = () => {
-    const reports = getReports();
+export const getStats = async () => {
+    const reports = await getReports();
     const total = reports.length;
     const verified = reports.filter(r => r.status === 'Verified').length;
     const investigating = reports.filter(r => r.status === 'Investigating').length;
 
-    // Calculate verified percentage
     const verifiedRate = total > 0 ? Math.round((verified / total) * 100) : 0;
 
     return {

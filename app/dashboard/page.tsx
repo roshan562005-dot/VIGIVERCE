@@ -22,14 +22,17 @@ export default function DashboardPage() {
     const [rank, setRank] = useState(0);
 
     useEffect(() => {
-        const reportStats = getStats();
-        const profile = getUserProfile();
-        setStats({ total: reportStats.total, verified: reportStats.verified });
-        setPoints(profile.points);
+        const loadData = async () => {
+            const reportStats = await getStats();
+            const profile = await getUserProfile();
+            setStats({ total: reportStats.total, verified: reportStats.verified });
+            setPoints(profile.points);
 
-        const mockCommunityPoints = [120, 90, 450, 30, 200];
-        const allPoints = [...mockCommunityPoints, profile.points].sort((a, b) => b - a);
-        setRank(allPoints.indexOf(profile.points) + 1);
+            const mockCommunityPoints = [120, 90, 450, 30, 200];
+            const allPoints = [...mockCommunityPoints, profile.points].sort((a, b) => b - a);
+            setRank(allPoints.indexOf(profile.points) + 1);
+        };
+        loadData();
     }, []);
 
     return (
