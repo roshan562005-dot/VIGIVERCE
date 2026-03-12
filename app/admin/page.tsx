@@ -12,13 +12,18 @@ export default function AdminPage() {
     const [stats, setStats] = useState({ total: 0, verified: 0, investigating: 0, verifiedRate: 0 });
     const [isLoading, setIsLoading] = useState(true);
 
-    const refreshData = () => {
+    const refreshData = async () => {
         setIsLoading(true);
-        const fetchedReports = getReports();
-        const fetchedStats = getStats();
-        setReports(fetchedReports);
-        setStats(fetchedStats);
-        setIsLoading(false);
+        try {
+            const fetchedReports = await getReports();
+            const fetchedStats = await getStats();
+            setReports(fetchedReports);
+            setStats(fetchedStats);
+        } catch (error) {
+            console.error("Failed to refresh admin data:", error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -28,9 +33,9 @@ export default function AdminPage() {
         return () => clearInterval(interval);
     }, []);
 
-    const handleStatusUpdate = (id: string, status: Report['status']) => {
-        updateReportStatus(id, status);
-        refreshData();
+    const handleStatusUpdate = async (id: string, status: Report['status']) => {
+        await updateReportStatus(id, status);
+        await refreshData();
     };
 
     const formatTimeAgo = (timestamp: number) => {
