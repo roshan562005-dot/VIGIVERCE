@@ -17,15 +17,19 @@ export default function DashboardLayout({
 
     useEffect(() => {
         const checkAuth = async () => {
+            console.log("DashboardLayout: Checking auth...");
             try {
                 const authenticated = await isAuthenticated();
+                console.log("DashboardLayout: Is authenticated?", authenticated);
                 if (!authenticated) {
+                    console.log("DashboardLayout: Not authenticated, redirecting to /login");
                     router.replace("/login");
                 } else {
+                    console.log("DashboardLayout: Authenticated, allowing access");
                     setIsChecking(false);
                 }
             } catch (error) {
-                console.error("Auth check failed:", error);
+                console.error("DashboardLayout: Auth check CRASHED:", error);
                 router.replace("/login");
             }
         };
