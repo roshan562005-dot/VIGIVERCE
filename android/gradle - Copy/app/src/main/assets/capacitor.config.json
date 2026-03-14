@@ -1,0 +1,10 @@
+{
+	"appId": "com.roshan.vigiverse",
+	"appName": "VigiVerse",
+	"webDir": "public",
+	"bundledWebRuntime": false,
+	"server": {
+		"url": "https://vigiverse.vercel.app",
+		"cleartext": true
+	}
+}
