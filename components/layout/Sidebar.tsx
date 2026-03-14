@@ -14,7 +14,8 @@ import {
     BookOpen,
     Pill,
     Activity,
-    Shield
+    Shield,
+    FlaskConical
 } from "lucide-react";
 
 const sidebarItems = [
@@ -37,6 +38,11 @@ const sidebarItems = [
         title: "Symptom Checker",
         href: "/dashboard/symptoms",
         icon: Activity,
+    },
+    {
+        title: "Interactions",
+        href: "/dashboard/interactions",
+        icon: FlaskConical,
     },
     {
         title: "Drug Resources",
