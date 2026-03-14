@@ -1,0 +1,85 @@
+﻿
+> vigiverse@0.1.0 build
+> next build
+
+node.exe : 
+[baseline-browser-mapping] 
+The data in this module is 
+over two months old.  To 
+ensure accurate Baseline 
+data, please update: `npm 
+i baseline-browser-mapping@
+latest -D`
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: ([ba  
+  seline-brows...ping@la   
+ test -D`:String) [], R    
+emoteException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+   Γû▓ Next.js 14.1.4
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+> [PWA] PWA support is disabled
+> [PWA] PWA support is disabled
+<w> [webpack.cache.PackFile
+CacheStrategy] Serializing 
+big strings (140kiB) 
+impacts deserialization 
+performance (consider 
+using Buffer instead and 
+decode when needed)
+ Γ£ô Compiled successfully
+   Linting and checking validity of types ...
+ Γ¿» ESLint must be 
+installed in order to run 
+during builds: npm install 
+--save-dev eslint
+Failed to compile.
+
+./capacitor.config.ts:7:3
+Type error: Object literal 
+may only specify known 
+properties, and 
+'bundledWebRuntime' does 
+not exist in type 
+'CapacitorConfig'.
+
+[0m [90m  5 |[39m   
+appName[33m:[39m [32m'Vi
+giVerse'[39m[33m,[39m[0
+m
+[0m [90m  6 |[39m   
+webDir[33m:[39m [32m'pub
+lic'[39m[33m,[39m 
+[90m// Set to public 
+since we are serving 
+directly from 
+Vercel[39m[0m
+[0m[31m[1m>[22m[39m[9
+0m  7 |[39m   bundledWebRu
+ntime[33m:[39m [36mfalse
+[39m[33m,[39m[0m
+[0m [90m    |[39m   
+[31m[1m^[22m[39m[0m
+[0m [90m  8 |[39m   
+server[33m:[39m {[0m
+[0m [90m  9 |[39m     
+[90m// ΓÜá∩╕Å IMPORTANT: 
+Replace this with your 
+actual Vercel Production 
+URL![39m[0m
+[0m [90m 10 |[39m     
+url[33m:[39m [32m'https:
+//vigiverse.vercel.app'[39
+m[33m,[39m [0m
