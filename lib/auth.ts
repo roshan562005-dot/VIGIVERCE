@@ -12,10 +12,11 @@ export interface User {
 
 export const login = async (provider: User['provider'], identifier: string) => {
     if (provider === 'google') {
+        const redirectTo = typeof window !== 'undefined' ? `${window.location.origin}/dashboard` : '';
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: `${window.location.origin}/dashboard`,
+                redirectTo,
             },
         });
         if (error) throw error;

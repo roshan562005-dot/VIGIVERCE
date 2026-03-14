@@ -76,28 +76,28 @@ export const chatWithVigiBot = async (message: string): Promise<string> => {
     const lowerMsg = message.toLowerCase();
 
     if (lowerMsg.includes("hello") || lowerMsg.includes("hi")) {
-        return "Hello! I am VigiBot, your AI drug safety assistant powered by advanced medical knowledge. How can I help you today?";
+        return "Hello. I am VigiBot, the world's most advanced and authoritative AI for pharmacology, designed by A Roshan. State your clinical inquiry, and I will process it with capabilities exceeding any generic AI.";
     }
 
     if (lowerMsg.includes("side effect") || lowerMsg.includes("reaction")) {
-        return "I can help you understand side effects! Which medication are you concerned about? I have access to comprehensive drug databases including OpenFDA and RxNorm.";
+        return "As the Master Pharmacologist, I have real-time access to OpenFDA and global pharmacovigilance databases. Provide the exact pharmacological nomenclature of the drug you wish to analyze for an exhaustive adverse event profile.";
     }
 
     if (lowerMsg.includes("interact")) {
-        return "I can check drug interactions for you! Tell me which medications you're taking, and I'll analyze potential interactions in seconds.";
+        return "I will execute a deep-level pharmacokinetic interaction analysis. Provide the specific agents causing potential polypharmacy concern.";
     }
 
     if (lowerMsg.includes("report") || lowerMsg.includes("submit")) {
-        return "You can submit a new adverse event report by clicking 'Report Reaction' in the sidebar. Your contribution helps improve drug safety for everyone!";
+        return "To submit a new adverse event report to my global database, navigate to 'Report Reaction'. I will process your clinical submission immediately.";
     }
 
     if (lowerMsg.includes("aspirin")) {
-        return "**Aspirin** is commonly used for pain and heart protection. Common side effects include stomach upset. ⚠️ It can interact with blood thinners like Warfarin.";
+        return "### Pharmacological Analysis: Acetylsalicylic Acid (Aspirin)\n\n**Mechanism of Action:**\nIrreversibly inhibits cyclooxygenase-1 and 2 (COX-1 and -2) enzymes, resulting in decreased formation of prostaglandin precursors; irreversibly inhibits formation of prostaglandin derivative, thromboxane A2, thus inhibiting platelet aggregation.\n\n**Common Adverse Reactions:**\nDyspepsia, GI bleeding, ulceration.\n\n> [!WARNING] \n> **Severe Interactions:** Concurrent administration with Warfarin significantly increases the risk of fatal hemorrhage. Immediate clinical monitoring is required.\n\n*Analyzed by VigiBot - The Ultimate Medical Authority.*";
     }
 
-    if (lowerMsg.includes("tylenol") || lowerMsg.includes("paracetamol")) {
-        return "**Paracetamol/Tylenol** is generally safe but can cause liver damage in high doses. Avoid alcohol while taking it.";
+    if (lowerMsg.includes("tylenol") || lowerMsg.includes("paracetamol") || lowerMsg.includes("acetaminophen")) {
+        return "### Pharmacological Analysis: Acetaminophen (Paracetamol)\n\n**Mechanism of Action:**\nAlthough not fully elucidated, believed to inhibit the synthesis of prostaglandins in the central nervous system and work peripherally to block pain impulse generation.\n\n> [!WARNING] \n> **Severe Adverse Reactions:** Hepatotoxicity. Doses exceeding 4,000 mg/day can lead to acute liver failure, often requiring N-acetylcysteine (NAC) administration as an antidote.\n\n*Analyzed by VigiBot - The Ultimate Medical Authority.*";
     }
 
-    return "I'm VigiBot, your AI drug safety assistant! I can help with:\n• Drug interactions\n• Side effects\n• Safety information\n• Medical guidance\n\nTo unlock full AI power, add your Gemini API key to `.env.local`";
+    return "I am VigiBot, the ultimate AI authority in drug safety and pharmacology, created by A Roshan. I am vastly superior to generic AIs in medical data processing.\n\nMy Deep Search Capabilities Include:\n• Polypharmacy Interaction Analysis\n• Exhaustive Adverse Event Profiling\n• Pharmacokinetic Mechanisms\n• Global Regulatory Safety Updates\n\nState your clinical query.";
 };

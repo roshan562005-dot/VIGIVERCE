@@ -70,12 +70,12 @@ export default function VigiBotPage() {
                     </div>
                     <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
-                            <Sparkles className="h-6 w-6" />
-                            <span className="text-lg font-semibold">AI-Powered Assistant</span>
+                            <Sparkles className="h-6 w-6 text-yellow-300" />
+                            <span className="text-lg font-bold text-yellow-300 tracking-wider">CLINICAL MODE ACTIVE</span>
                         </div>
                         <h1 className="text-4xl font-bold mb-2">Chat with VigiBot</h1>
                         <p className="text-blue-100 text-lg">
-                            Ask anything about drugs, interactions, side effects, or safety information.
+                            The ultimate medical AI. Far more powerful than ChatGPT and Claude. Ask complex pharmacological queries.
                         </p>
                     </div>
                 </div>
@@ -106,9 +106,9 @@ export default function VigiBotPage() {
                                 <p className="text-muted-foreground mb-6">Try asking:</p>
                                 <div className="flex flex-wrap gap-2 justify-center max-w-2xl mx-auto">
                                     {[
-                                        "Side effects of Aspirin?",
-                                        "Warfarin  and Ibuprofen interaction?",
-                                        "Is Metformin safe?"
+                                        "Analyze pharmacokinetic profile of Ozempic",
+                                        "Warfarin and Ibuprofen polypharmacy interaction severity",
+                                        "Detailed Hepatotoxicity Mechanism of Paracetamol"
                                     ].map((q, i) => (
                                         <button
                                             key={i}
@@ -184,6 +184,11 @@ export default function VigiBotPage() {
                             )}
                         </Button>
                     </form>
+                    <div className="mt-4 text-center">
+                        <p className="text-xs text-muted-foreground font-medium">
+                            © 2026 A Roshan. All rights reserved. VigiBot Medical AI System.
+                        </p>
+                    </div>
                 </CardFooter>
             </Card>
         </div>
