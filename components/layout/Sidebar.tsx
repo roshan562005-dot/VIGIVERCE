@@ -13,7 +13,8 @@ import {
     LogOut,
     BookOpen,
     Pill,
-    Activity
+    Activity,
+    Shield
 } from "lucide-react";
 
 const sidebarItems = [
@@ -51,6 +52,11 @@ const sidebarItems = [
         title: "Profile",
         href: "/dashboard/profile",
         icon: User,
+    },
+    {
+        title: "Admin Review",
+        href: "/dashboard/admin",
+        icon: Shield,
     },
 ];
 
