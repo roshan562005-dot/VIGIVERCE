@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Shield, Award, Bot, Database, TrendingUp, Users, Sparkles, ArrowRight, Activity, Globe, HeartPulse } from "lucide-react";
 import { VideoPlayer } from "@/components/landing/VideoPlayer";
+import { MockVigiBot } from "@/components/landing/MockVigiBot";
 
 export default function Home() {
     return (
@@ -25,87 +26,154 @@ export default function Home() {
                 </div>
 
                 <div className="container mx-auto px-4 py-20">
-                    <div className="flex flex-col items-center text-center space-y-8 max-w-4xl mx-auto">
-                        <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-full text-sm font-medium text-blue-700 dark:text-blue-300 animate-in fade-in slide-in-from-top-4 duration-700">
-                            <Sparkles className="h-4 w-4" />
-                            AI-Powered Drug Safety Platform
+                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                        <div className="flex flex-col items-start text-left space-y-8 max-w-2xl">
+                            <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 px-4 py-2 rounded-full text-sm font-medium text-blue-700 dark:text-blue-300 animate-in fade-in slide-in-from-left-8 duration-700">
+                                <Sparkles className="h-4 w-4" />
+                                AI-Powered Drug Safety Platform
+                            </div>
+
+                            <h1 className="text-5xl md:text-7xl font-bold tracking-tight animate-in fade-in slide-in-from-left-8 duration-700 delay-150">
+                                The Future of <br />
+                                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent animate-gradient">
+                                    Pharmacovigilance
+                                </span>
+                            </h1>
+
+                            <p className="text-xl md:text-2xl text-muted-foreground animate-in fade-in slide-in-from-left-8 duration-700 delay-300">
+                                Join the global community monitoring drug safety. Report reactions, earn rewards, and access real-time AI insights.
+                            </p>
+
+                            <div className="flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-left-8 duration-700 delay-500">
+                                <Link
+                                    href="/login"
+                                    className={cn(buttonVariants({ size: "lg" }), "group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all")}
+                                >
+                                    Get Started Free
+                                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                                </Link>
+                                <Link
+                                    href="/dashboard/resources"
+                                    className={cn(buttonVariants({ variant: "outline", size: "lg" }), "text-lg px-8 py-6 rounded-full border-2 hover:bg-accent transition-all bg-background/50 backdrop-blur-sm")}
+                                >
+                                    Explore Database
+                                </Link>
+                            </div>
                         </div>
 
-                        <h1 className="text-5xl md:text-7xl font-bold tracking-tight animate-in fade-in slide-in-from-bottom-6 duration-700 delay-150">
-                            The Future of <br />
-                            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent animate-gradient">
-                                Pharmacovigilance
-                            </span>
-                        </h1>
-
-                        <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
-                            Join the global community monitoring drug safety. Report reactions, earn rewards, and access real-time AI insights.
-                        </p>
-
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-in fade-in slide-in-from-bottom-10 duration-700 delay-500">
-                            <Link
-                                href="/login"
-                                className={cn(buttonVariants({ size: "lg" }), "group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all")}
-                            >
-                                Get Started Free
-                                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                            <Link
-                                href="/dashboard/resources"
-                                className={cn(buttonVariants({ variant: "outline", size: "lg" }), "text-lg px-8 py-6 rounded-full border-2 hover:bg-accent transition-all")}
-                            >
-                                Explore Database
-                            </Link>
+                        {/* Interactive Hero Element: Mock VigiBot */}
+                        <div className="hidden lg:flex justify-end items-center relative">
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl -z-10 animate-pulse" />
+                            <MockVigiBot />
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* How It Works Section */}
-            <section className="py-24 bg-muted/50">
+            {/* Trust Band */}
+            <section className="py-8 bg-black dark:bg-black border-y border-white/10 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black z-10 w-full h-full pointer-events-none" />
                 <div className="container mx-auto px-4">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">How VigiVerse Works</h2>
-                        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                            A seamless ecosystem connecting patients, AI, and global health databases.
+                    <p className="text-center text-sm font-semibold text-slate-400 mb-6 uppercase tracking-widest">
+                        Cross-Referencing Global Health Data
+                    </p>
+                    <div className="flex justify-center items-center gap-12 md:gap-24 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 cursor-default">
+                        {/* Mock Logos for Trust */}
+                        <div className="text-2xl font-black text-white whitespace-nowrap"><Globe className="inline mr-2 h-6 w-6"/> OpenFDA</div>
+                        <div className="text-2xl font-black text-white whitespace-nowrap"><Database className="inline mr-2 h-6 w-6"/> RxNorm</div>
+                        <div className="text-2xl font-black text-white whitespace-nowrap"><Activity className="inline mr-2 h-6 w-6"/> DrugBank</div>
+                        <div className="text-2xl font-black text-white whitespace-nowrap hidden md:block"><Shield className="inline mr-2 h-6 w-6"/> WHO-UMC</div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Problem vs Solution Section */}
+            <section className="py-24 bg-slate-950 text-slate-50 relative overflow-hidden">
+                {/* Background Grid */}
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-600/10 blur-[120px] rounded-full point-events-none" />
+                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/20 blur-[120px] rounded-full point-events-none" />
+
+                <div className="container mx-auto px-4 relative z-10">
+                    <div className="text-center mb-20">
+                        <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">The Pharmacovigilance Gap</h2>
+                        <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+                            The current system for tracking Adverse Drug Reactions is broken. We rebuilt it from the ground up.
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-12 relative">
-                        {/* Connecting Line (Desktop) */}
-                        <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-blue-300 dark:via-blue-700 to-transparent -translate-y-1/2 z-0" />
-
-                        {/* Step 1 */}
-                        <div className="relative z-10 flex flex-col items-center text-center group">
-                            <div className="w-20 h-20 bg-background border-4 border-blue-500 rounded-full flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <Activity className="h-10 w-10 text-blue-600" />
+                    <div className="grid md:grid-cols-2 gap-12 lg:gap-24 items-center max-w-6xl mx-auto">
+                        {/* The Problem (Old Way) */}
+                        <div className="space-y-8 bg-slate-900/50 p-8 rounded-3xl border border-slate-800">
+                            <div className="flex items-center gap-4 text-red-400 mb-6">
+                                <div className="h-12 w-12 rounded-full bg-red-500/10 flex items-center justify-center border border-red-500/20">
+                                    <Activity className="h-6 w-6" />
+                                </div>
+                                <h3 className="text-2xl font-bold">The Old Standard</h3>
                             </div>
-                            <h3 className="text-xl font-bold mb-2">1. Report Reaction</h3>
-                            <p className="text-muted-foreground">
-                                Easily log adverse drug reactions through our intuitive interface or voice assistant.
-                            </p>
+                            
+                            <ul className="space-y-6">
+                                <li className="flex gap-4 items-start">
+                                    <span className="text-red-400 mt-1">✕</span>
+                                    <div>
+                                        <h4 className="font-semibold text-slate-200">Paper-Based & Slow</h4>
+                                        <p className="text-slate-500 text-sm mt-1">Months pass before critical safety signals are identified by regulators.</p>
+                                    </div>
+                                </li>
+                                <li className="flex gap-4 items-start">
+                                    <span className="text-red-400 mt-1">✕</span>
+                                    <div>
+                                        <h4 className="font-semibold text-slate-200">One-Way Street</h4>
+                                        <p className="text-slate-500 text-sm mt-1">Patients submit data into a void and never learn if their reaction is common.</p>
+                                    </div>
+                                </li>
+                                <li className="flex gap-4 items-start">
+                                    <span className="text-red-400 mt-1">✕</span>
+                                    <div>
+                                        <h4 className="font-semibold text-slate-200">Complex Medical Jargon</h4>
+                                        <p className="text-slate-500 text-sm mt-1">Forms require deep clinical knowledge, discouraging patient participation.</p>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
 
-                        {/* Step 2 */}
-                        <div className="relative z-10 flex flex-col items-center text-center group">
-                            <div className="w-20 h-20 bg-background border-4 border-purple-500 rounded-full flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <Bot className="h-10 w-10 text-purple-600" />
+                        {/* The Solution (VigiVerse Way) */}
+                        <div className="space-y-8 bg-gradient-to-br from-blue-900/40 to-purple-900/40 p-8 rounded-3xl border border-blue-500/30 relative">
+                            {/* Glow Effect */}
+                            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl blur opacity-20" />
+                            
+                            <div className="relative">
+                                <div className="flex items-center gap-4 text-blue-400 mb-6">
+                                    <div className="h-12 w-12 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-500/30">
+                                        <Sparkles className="h-6 w-6" />
+                                    </div>
+                                    <h3 className="text-2xl font-bold">The VigiVerse Way</h3>
+                                </div>
+                                
+                                <ul className="space-y-6">
+                                    <li className="flex gap-4 items-start">
+                                        <span className="text-blue-400 mt-1">✓</span>
+                                        <div>
+                                            <h4 className="font-semibold text-white">Real-Time AI Processing</h4>
+                                            <p className="text-blue-100/70 text-sm mt-1">Gemini AI analyzes your report instantly, checking against global databases in milliseconds.</p>
+                                        </div>
+                                    </li>
+                                    <li className="flex gap-4 items-start">
+                                        <span className="text-blue-400 mt-1">✓</span>
+                                        <div>
+                                            <h4 className="font-semibold text-white">Gamified & Rewarding</h4>
+                                            <p className="text-blue-100/70 text-sm mt-1">Earn reputation points, unlock badges, and track your impact on the global leaderboard.</p>
+                                        </div>
+                                    </li>
+                                    <li className="flex gap-4 items-start">
+                                        <span className="text-blue-400 mt-1">✓</span>
+                                        <div>
+                                            <h4 className="font-semibold text-white">VigiBot Personal Assistant</h4>
+                                            <p className="text-blue-100/70 text-sm mt-1">Chat in plain English. The AI understands complex polypharmacy and explains it simply.</p>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
-                            <h3 className="text-xl font-bold mb-2">2. AI Analysis</h3>
-                            <p className="text-muted-foreground">
-                                Our Gemini-powered AI instantly verifies data, checks for interactions, and assesses severity.
-                            </p>
-                        </div>
-
-                        {/* Step 3 */}
-                        <div className="relative z-10 flex flex-col items-center text-center group">
-                            <div className="w-20 h-20 bg-background border-4 border-cyan-500 rounded-full flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <Globe className="h-10 w-10 text-cyan-600" />
-                            </div>
-                            <h3 className="text-xl font-bold mb-2">3. Global Impact</h3>
-                            <p className="text-muted-foreground">
-                                Verified data contributes to global safety alerts, helping protect millions worldwide.
-                            </p>
                         </div>
                     </div>
                 </div>
