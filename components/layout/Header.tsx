@@ -12,7 +12,7 @@ export function Header() {
         getCurrentUser().then(setUser);
     }, []);
     return (
-        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-6 lg:h-[60px]">
+        <header className="flex h-14 items-center gap-4 border-b bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 px-6 lg:h-[60px] sticky top-0 z-40">
             <div className="w-full flex-1 flex items-center gap-4">
                 <form className="flex-1">
                     <div className="relative">

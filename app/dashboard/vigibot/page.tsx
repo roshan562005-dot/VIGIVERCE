@@ -21,6 +21,17 @@ export default function VigiBotPage() {
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        // Initialize with a welcome message if empty
+        if (messages.length === 0) {
+            setMessages([{
+                id: 'welcome-msg',
+                role: 'assistant',
+                content: "Hello! I am VigiBot, your advanced clinical pharmacology assistant. \n\nI specialize in analyzing complex drug interactions, identifying adverse drug reactions (ADRs), and explaining pharmacokinetics. How can I assist you with medication safety today?"
+            }]);
+        }
+    }, []);
+
+    useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
@@ -159,7 +170,25 @@ export default function VigiBotPage() {
                     </div>
                 </CardContent>
 
-                <CardFooter className="border-t-2 bg-muted/30 p-4">
+                <CardFooter className="border-t-2 bg-muted/30 p-4 flex flex-col gap-3">
+                    {/* Quick Prompts */}
+                    <div className="w-full overflow-x-auto pb-2 -mx-4 px-4 flex gap-2 scrollbar-hide">
+                        {[
+                            "Analyze my ADR symptoms",
+                            "Explain Metformin side effects",
+                            "Is it safe to take Ibuprofen with Warfarin?",
+                            "What is the half-life of Ozempic?"
+                        ].map((prompt, i) => (
+                            <button
+                                key={i}
+                                onClick={() => setInput(prompt)}
+                                className="whitespace-nowrap px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-xs font-medium border border-blue-200 dark:border-blue-800 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
+                            >
+                                {prompt}
+                            </button>
+                        ))}
+                    </div>
+
                     <form onSubmit={handleSend} className="flex gap-3 w-full">
                         <Input
                             value={input}

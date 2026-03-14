@@ -69,25 +69,25 @@ export function Sidebar() {
         router.push("/");
     };
     return (
-        <div className="flex h-full w-64 flex-col border-r bg-card">
+        <div className="flex h-full w-64 flex-col border-r bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
             <div className="flex h-14 items-center border-b px-6">
                 <Link href="/" className="flex items-center gap-2 font-semibold">
                     <ShieldAlert className="h-6 w-6 text-primary" />
                     <span>VigiVerse</span>
                 </Link>
             </div>
-            <div className="flex-1 overflow-auto py-4">
-                <nav className="grid items-start px-4 text-sm font-medium">
+            <div className="flex-1 py-4 flex flex-col items-center">
+                <nav className="grid w-full items-start px-4 text-sm font-medium gap-1">
                     {sidebarItems.map((item, index) => (
                         <Link
                             key={index}
                             href={item.href}
                             className={cn(
-                                "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                                pathname === item.href && "bg-muted text-primary"
+                                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-muted-foreground transition-all duration-300 hover:text-primary hover:bg-primary/10 hover:shadow-sm hover:translate-x-1",
+                                pathname === item.href && "bg-primary/15 text-primary shadow-sm font-semibold"
                             )}
                         >
-                            <item.icon className="h-4 w-4" />
+                            <item.icon className={cn("h-4 w-4 transition-transform duration-300", pathname === item.href && "scale-110")} />
                             {item.title}
                         </Link>
                     ))}
@@ -96,9 +96,9 @@ export function Sidebar() {
             <div className="mt-auto border-t p-4">
                 <button
                     onClick={handleLogout}
-                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-all hover:text-destructive"
+                    className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-all duration-300 hover:text-destructive hover:bg-destructive/10 hover:shadow-sm hover:translate-x-1"
                 >
-                    <LogOut className="h-4 w-4" />
+                    <LogOut className="h-4 w-4 group-hover:scale-110 transition-transform duration-300" />
                     Logout
                 </button>
             </div>

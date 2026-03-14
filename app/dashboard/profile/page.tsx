@@ -47,12 +47,12 @@ export default function ProfilePage() {
     };
 
     const achievements = [
-        { id: 1, name: "First Report", description: "Submit your first ADR report", icon: Star, color: "from-blue-500 to-cyan-500", earned: reports.length > 0 },
-        { id: 2, name: "Safety Champion", description: "Earn 100 points", icon: Shield, color: "from-purple-500 to-pink-500", earned: profile.points >= 100 },
-        { id: 3, name: "Top Contributor", description: "Submit 5 verified reports", icon: Trophy, color: "from-yellow-500 to-orange-500", earned: reports.filter(r => r.aiScore > 70).length >= 5 },
-        { id: 4, name: "Quick Learner", description: "Complete 3 educational modules", icon: Zap, color: "from-green-500 to-emerald-500", earned: false },
-        { id: 5, name: "Team Player", description: "Help 10 community members", icon: Target, color: "from-red-500 to-rose-500", earned: false },
-        { id: 6, name: "Vigilant Guardian", description: "Maintain 30-day streak", icon: Medal, color: "from-indigo-500 to-violet-500", earned: false },
+        { id: 1, name: "Platinum Contributor", description: "Earn 2000+ points on the Leaderboard", icon: Shield, color: "from-blue-500 to-cyan-500", earned: profile.badges.includes("💎 Platinum") },
+        { id: 2, name: "Gold Contributor", description: "Earn 1500+ points", icon: Trophy, color: "from-yellow-400 to-yellow-600", earned: profile.badges.includes("🥇 Gold") || profile.badges.includes("💎 Platinum") },
+        { id: 3, name: "Silver Contributor", description: "Earn 1000+ points", icon: Award, color: "from-gray-300 to-gray-500", earned: profile.badges.includes("🥈 Silver") || profile.badges.includes("🥇 Gold") || profile.badges.includes("💎 Platinum") },
+        { id: 4, name: "Rising Star", description: "Earn 500+ points", icon: Star, color: "from-orange-400 to-orange-600", earned: profile.badges.includes("⭐ Rising Star") || profile.badges.includes("🥈 Silver") || profile.badges.includes("🥇 Gold") || profile.badges.includes("💎 Platinum") },
+        { id: 5, name: "First Report", description: "Submit your very first ADR report", icon: Target, color: "from-green-500 to-emerald-500", earned: reports.length > 0 },
+        { id: 6, name: "Verified Reporter", description: "Have at least one report verified by an Admin", icon: CheckCircle, color: "from-purple-500 to-pink-500", earned: reports.some(r => r.status === 'Verified') },
     ];
 
     const stats = [
