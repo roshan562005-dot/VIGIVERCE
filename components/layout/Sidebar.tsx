@@ -12,6 +12,8 @@ import {
     ShieldAlert,
     LogOut,
     BookOpen,
+    Pill,
+    Activity
 } from "lucide-react";
 
 const sidebarItems = [
@@ -24,6 +26,16 @@ const sidebarItems = [
         title: "Report ADR",
         href: "/dashboard/report",
         icon: FilePlus,
+    },
+    {
+        title: "Pill Identifier",
+        href: "/dashboard/identifier",
+        icon: Pill,
+    },
+    {
+        title: "Symptom Checker",
+        href: "/dashboard/symptoms",
+        icon: Activity,
     },
     {
         title: "Drug Resources",
