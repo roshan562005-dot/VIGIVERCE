@@ -20,6 +20,8 @@ export const metadata: Metadata = {
     }
 };
 
+import { LanguageProvider } from "@/components/providers/LanguageProvider";
+
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -33,7 +35,9 @@ export default function RootLayout({
                     inter.variable
                 )}
             >
-                {children}
+                <LanguageProvider>
+                    {children}
+                </LanguageProvider>
             </body>
         </html>
     );
