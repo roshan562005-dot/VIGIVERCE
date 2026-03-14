@@ -25,16 +25,26 @@ export const login = async (provider: User['provider'], identifier: string) => {
             phone: identifier,
         });
         if (error) throw error;
+    } else if (provider === 'email') {
+        const { error } = await supabase.auth.signInWithOtp({
+            email: identifier,
+        });
+        if (error) throw error;
     }
 };
 
-export const verifyOtp = async (phone: string, token: string) => {
-    const { data, error } = await supabase.auth.verifyOtp({
-        phone,
-        token,
-        type: 'sms',
-    });
+export const verifyOtp = async (identifier: string, token: string, type: 'sms' | 'email' = 'sms') => {
+    const params = type === 'sms' 
+        ? { phone: identifier, token, type: 'sms' as const }
+        : { email: identifier, token, type: 'email' as const };
+        
+    const { data, error } = await supabase.auth.verifyOtp(params);
     if (error) throw error;
+    
+    // Sync to database
+    if (data.user) {
+        await syncUserToDatabase(data.user);
+    }
     return data.user;
 };
 
@@ -55,6 +65,23 @@ export const getCurrentUser = async (): Promise<User | null> => {
         provider: user.app_metadata?.provider as User['provider'],
         avatar: user.user_metadata?.avatar_url,
     };
+};
+
+export const syncUserToDatabase = async (user: any) => {
+    if (!user) return;
+    
+    const name = user.user_metadata?.full_name || user.email?.split('@')[0] || user.phone || 'User';
+    
+    // Upsert the profile into our database
+    const { error } = await supabase
+        .from('profiles')
+        .upsert({
+            id: user.id,
+            full_name: name,
+            updated_at: new Date().toISOString()
+        }, { onConflict: 'id' });
+        
+    if (error) console.error("Database sync error:", error);
 };
 
 export const isAuthenticated = async (): Promise<boolean> => {

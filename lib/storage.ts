@@ -50,6 +50,37 @@ export const getUserProfile = async (): Promise<UserProfile> => {
     };
 };
 
+export const updateUserProfile = async (name: string): Promise<UserProfile> => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("User not authenticated");
+
+    const currentProfile = await getUserProfile();
+
+    const { error } = await supabase
+        .from('profiles')
+        .update({
+            full_name: name,
+            updated_at: new Date().toISOString()
+        })
+        .eq('id', user.id);
+
+    // If there's an error, it might be because the profile doesn't exist yet, we'd upsert it instead.
+    if (error) {
+        const { error: insertError } = await supabase
+            .from('profiles')
+            .upsert({
+                id: user.id,
+                full_name: name,
+                points: currentProfile.points,
+                badges: currentProfile.badges,
+                updated_at: new Date().toISOString()
+            });
+        if (insertError) throw insertError;
+    }
+
+    return { ...currentProfile, name };
+};
+
 export const updatePoints = async (pointsToAdd: number) => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;

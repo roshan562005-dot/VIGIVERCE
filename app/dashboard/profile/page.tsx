@@ -6,24 +6,45 @@ import { Button } from "@/components/ui/button";
 import {
     User, Award, TrendingUp, CheckCircle, Trophy,
     Star, Zap, Target, Calendar, Mail, Shield,
-    Sparkles, Crown, Medal
+    Sparkles, Crown, Medal, Loader2
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { getUserProfile, getReports } from "@/lib/storage";
+import { getUserProfile, getReports, updateUserProfile } from "@/lib/storage";
+import { Input } from "@/components/ui/input";
 
 export default function ProfilePage() {
-    const [profile, setProfile] = useState({ points: 0, badges: [] as string[] });
+    const [profile, setProfile] = useState({ name: 'User', points: 0, badges: [] as string[] });
     const [reports, setReports] = useState<any[]>([]);
+    
+    // Add edit states
+    const [isEditing, setIsEditing] = useState(false);
+    const [editName, setEditName] = useState("");
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         const loadData = async () => {
             const userProfile = await getUserProfile();
             const userReports = await getReports();
             setProfile(userProfile);
+            setEditName(userProfile.name);
             setReports(userReports);
         };
         loadData();
     }, []);
+
+    const handleSaveProfile = async () => {
+        if (!editName.trim()) return;
+        setIsSaving(true);
+        try {
+            const updatedProfile = await updateUserProfile(editName);
+            setProfile(updatedProfile);
+            setIsEditing(false);
+        } catch (error) {
+            console.error("Failed to update profile", error);
+        } finally {
+            setIsSaving(false);
+        }
+    };
 
     const achievements = [
         { id: 1, name: "First Report", description: "Submit your first ADR report", icon: Star, color: "from-blue-500 to-cyan-500", earned: reports.length > 0 },
@@ -66,7 +87,31 @@ export default function ProfilePage() {
                             <Sparkles className="h-6 w-6" />
                             <span className="text-lg font-semibold">Active Contributor</span>
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-bold mb-3">Your Profile</h1>
+                        
+                        {isEditing ? (
+                            <div className="mb-3 flex flex-col md:flex-row gap-3 items-center md:items-start max-w-sm mx-auto md:mx-0">
+                                <Input 
+                                    value={editName}
+                                    onChange={(e) => setEditName(e.target.value)}
+                                    className="bg-white/10 border-white/30 text-white placeholder:text-white/50 text-xl font-bold h-12"
+                                    placeholder="Enter your name"
+                                    disabled={isSaving}
+                                />
+                                <div className="flex gap-2">
+                                    <Button size="sm" onClick={handleSaveProfile} disabled={isSaving || !editName.trim()} className="bg-green-500 hover:bg-green-600 text-white h-12">
+                                        {isSaving ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null} Save
+                                    </Button>
+                                    <Button size="sm" variant="ghost" onClick={() => { setIsEditing(false); setEditName(profile.name); }} disabled={isSaving} className="text-white hover:bg-white/20 h-12">
+                                        Cancel
+                                    </Button>
+                                </div>
+                            </div>
+                        ) : (
+                            <h1 className="text-4xl md:text-5xl font-bold mb-3">
+                                {profile.name !== 'User' ? profile.name : "Your Profile"}
+                            </h1>
+                        )}
+
                         <p className="text-pink-100 text-lg mb-4">
                             Making healthcare safer, one report at a time
                         </p>
@@ -84,10 +129,12 @@ export default function ProfilePage() {
 
                     {/* Quick Actions */}
                     <div className="flex flex-col gap-3">
-                        <Button className="bg-white text-purple-600 hover:bg-white/90 shadow-lg">
-                            <User className="mr-2 h-4 w-4" />
-                            Edit Profile
-                        </Button>
+                        {!isEditing && (
+                            <Button onClick={() => setIsEditing(true)} className="bg-white text-purple-600 hover:bg-white/90 shadow-lg" disabled={isSaving}>
+                                <User className="mr-2 h-4 w-4" />
+                                Edit Profile
+                            </Button>
+                        )}
                         <Button className="bg-white/20 text-white hover:bg-white/30 border border-white/40 shadow-lg backdrop-blur-sm">
                             View Public Profile
                         </Button>

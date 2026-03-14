@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { isAuthenticated } from "@/lib/auth";
+import { isAuthenticated, syncUserToDatabase } from "@/lib/auth";
 import { Loader2 } from "lucide-react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
@@ -17,7 +17,6 @@ export default function DashboardLayout({
 
     useEffect(() => {
         const checkAuth = async () => {
-            console.log("DashboardLayout: Checking auth...");
             try {
                 const authenticated = await isAuthenticated();
                 console.log("DashboardLayout: Is authenticated?", authenticated);
@@ -26,6 +25,14 @@ export default function DashboardLayout({
                     router.replace("/login");
                 } else {
                     console.log("DashboardLayout: Authenticated, allowing access");
+                    
+                    // Sync OAuth users to the database
+                    const { supabase } = await import('@/lib/supabase');
+                    const { data } = await supabase.auth.getUser();
+                    if (data?.user) {
+                        await syncUserToDatabase(data.user);
+                    }
+                    
                     setIsChecking(false);
                 }
             } catch (error) {

@@ -23,21 +23,26 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [otp, setOtp] = useState("");
-    const [showOtpInput, setShowOtpInput] = useState(false);
+    const [showEmailOtpInput, setShowEmailOtpInput] = useState(false);
+    const [showPhoneOtpInput, setShowPhoneOtpInput] = useState(false);
 
     const handleLogin = async (provider: 'google' | 'email' | 'phone', identifier: string) => {
         setIsLoading(true);
         try {
-            if (provider === 'phone' && !showOtpInput) {
+            if (provider === 'phone' && !showPhoneOtpInput) {
                 await login('phone', identifier);
-                setShowOtpInput(true);
-            } else if (provider === 'phone' && showOtpInput) {
-                await verifyOtp(identifier, otp);
+                setShowPhoneOtpInput(true);
+            } else if (provider === 'phone' && showPhoneOtpInput) {
+                await verifyOtp(identifier, otp, 'sms');
+                router.push("/dashboard");
+            } else if (provider === 'email' && !showEmailOtpInput) {
+                await login('email', identifier);
+                setShowEmailOtpInput(true);
+            } else if (provider === 'email' && showEmailOtpInput) {
+                await verifyOtp(identifier, otp, 'email');
                 router.push("/dashboard");
             } else if (provider === 'google') {
                 await login('google', '');
-            } else {
-                alert("Email login is coming soon! Please use Google or Phone OTP for now.");
             }
         } catch (error: any) {
             console.error("Login error:", error);
@@ -79,12 +84,35 @@ export default function LoginPage() {
                                         required
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
+                                        disabled={showEmailOtpInput || isLoading}
                                     />
                                 </div>
-                                <Button className="w-full" onClick={() => handleLogin('email', email || 'user@example.com')} disabled={isLoading}>
+                                {showEmailOtpInput && (
+                                    <div className="grid gap-2 animate-in fade-in slide-in-from-top-2">
+                                        <Label htmlFor="email-otp">Verification Code passed to email</Label>
+                                        <Input
+                                            id="email-otp"
+                                            type="text"
+                                            placeholder="123456"
+                                            required
+                                            value={otp}
+                                            onChange={(e) => setOtp(e.target.value)}
+                                            disabled={isLoading}
+                                        />
+                                    </div>
+                                )}
+                                <Button className="w-full" onClick={() => handleLogin('email', email)} disabled={isLoading}>
                                     {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Mail className="mr-2 h-4 w-4" />}
-                                    Sign In with Email
+                                    {showEmailOtpInput ? "Verify Email Code" : "Sign In with Email"}
                                 </Button>
+                                {showEmailOtpInput && (
+                                    <button 
+                                        onClick={() => setShowEmailOtpInput(false)}
+                                        className="text-xs text-center text-muted-foreground hover:text-primary transition-colors"
+                                    >
+                                        Change Email Address
+                                    </button>
+                                )}
                                 <div className="relative">
                                     <div className="absolute inset-0 flex items-center">
                                         <span className="w-full border-t" />
@@ -113,10 +141,10 @@ export default function LoginPage() {
                                         required
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
-                                        disabled={showOtpInput || isLoading}
+                                        disabled={showPhoneOtpInput || isLoading}
                                     />
                                 </div>
-                                {showOtpInput && (
+                                {showPhoneOtpInput && (
                                     <div className="grid gap-2 animate-in fade-in slide-in-from-top-2">
                                         <Label htmlFor="otp">Verification Code (OTP)</Label>
                                         <Input
@@ -132,11 +160,11 @@ export default function LoginPage() {
                                 )}
                                 <Button className="w-full" onClick={() => handleLogin('phone', phone)} disabled={isLoading}>
                                     {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Phone className="mr-2 h-4 w-4" />}
-                                    {showOtpInput ? "Verify Code" : "Send OTP"}
+                                    {showPhoneOtpInput ? "Verify Phone Code" : "Send SMS OTP"}
                                 </Button>
-                                {showOtpInput && (
+                                {showPhoneOtpInput && (
                                     <button 
-                                        onClick={() => setShowOtpInput(false)}
+                                        onClick={() => setShowPhoneOtpInput(false)}
                                         className="text-xs text-center text-muted-foreground hover:text-primary transition-colors"
                                     >
                                         Change Phone Number
