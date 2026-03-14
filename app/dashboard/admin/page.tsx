@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ShieldAlert, Activity, CheckCircle, Clock, AlertTriangle, Eye, RefreshCw, Layers } from "lucide-react";
+import { ShieldAlert, Activity, CheckCircle, Clock, AlertTriangle, Eye, RefreshCw, Layers, TrendingUp } from "lucide-react";
 import { getReports, getStats, updateReportStatus, Report } from "@/lib/storage";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 export default function AdminDashboardPage() {
     const [reports, setReports] = useState<Report[]>([]);
@@ -131,6 +132,54 @@ export default function AdminDashboardPage() {
                     </CardContent>
                 </Card>
             </div>
+
+            {/* Data Visualization */}
+            {reports.length > 0 && (
+                <Card className="border-2 shadow-sm overflow-hidden">
+                    <CardHeader className="bg-muted/30 border-b pb-4">
+                        <CardTitle className="flex items-center gap-2">
+                            <TrendingUp className="h-5 w-5 text-indigo-500" />
+                            Report Distribution Status
+                        </CardTitle>
+                        <CardDescription>Visual breakdown of current pharmacovigilance caseload.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-6">
+                        <div className="h-[250px] w-full mt-4">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart
+                                    data={[
+                                        { name: 'Verified', count: stats.verified, fill: '#22c55e' },
+                                        { name: 'Investigating', count: stats.investigating, fill: '#eab308' },
+                                        { name: 'Pending', count: reports.filter(r => r.status === 'Pending').length, fill: '#3b82f6' },
+                                        { name: 'Dismissed', count: reports.filter(r => r.status === 'Dismissed').length, fill: '#6b7280' },
+                                    ]}
+                                    margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" className="dark:stroke-slate-800" />
+                                    <XAxis dataKey="name" axisLine={false} tickLine={false} className="text-xs font-medium" />
+                                    <YAxis allowDecimals={false} axisLine={false} tickLine={false} className="text-xs font-medium" />
+                                    <Tooltip 
+                                        cursor={{ fill: 'transparent' }}
+                                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
+                                    />
+                                    <Bar dataKey="count" radius={[6, 6, 0, 0]}>
+                                        {
+                                            [
+                                                { name: 'Verified', count: stats.verified, fill: '#22c55e' },
+                                                { name: 'Investigating', count: stats.investigating, fill: '#eab308' },
+                                                { name: 'Pending', count: reports.filter(r => r.status === 'Pending').length, fill: '#3b82f6' },
+                                                { name: 'Dismissed', count: reports.filter(r => r.status === 'Dismissed').length, fill: '#6b7280' },
+                                            ].map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={entry.fill} />
+                                            ))
+                                        }
+                                    </Bar>
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </CardContent>
+                </Card>
+            )}
 
             {/* Reports Feed */}
             <Card className="border-2 shadow-md">
