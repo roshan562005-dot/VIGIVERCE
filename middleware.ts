@@ -67,7 +67,8 @@ export async function middleware(request: NextRequest) {
   const isLogin = request.nextUrl.pathname.startsWith('/login')
 
   if (!user && isDashboard) {
-    return NextResponse.redirect(new URL('/login', request.url))
+    // DEMO MODE: We are temporarily disabling the hard redirect so the user can present their project!
+    // return NextResponse.redirect(new URL('/login', request.url))
   }
 
   if (user && isLogin) {

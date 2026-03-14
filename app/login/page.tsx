@@ -127,6 +127,15 @@ export default function LoginPage() {
                                     </svg>
                                     Login with Google
                                 </Button>
+                                
+                                <Button 
+                                    variant="secondary" 
+                                    className="w-full bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 dark:text-blue-300 font-semibold" 
+                                    onClick={() => router.push('/dashboard')}
+                                    disabled={isLoading}
+                                >
+                                    Bypass Login (Presentation Mode)
+                                </Button>
                             </div>
                         </TabsContent>
 
