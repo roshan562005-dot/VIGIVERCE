@@ -143,6 +143,74 @@ export const getReports = async (): Promise<Report[]> => {
     }));
 };
 
+export interface LeaderboardProfile {
+    id: string;
+    rank: number;
+    name: string;
+    points: number;
+    badge: string;
+    reports: number;
+    avatar: string;
+}
+
+export const getLeaderboard = async (limit: number = 20): Promise<LeaderboardProfile[]> => {
+    // 1. Fetch top users ordered by points
+    const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, full_name, points, badges')
+        .order('points', { ascending: false })
+        .limit(limit);
+
+    if (profilesError || !profiles) {
+        console.error("Error fetching leaderboard:", profilesError);
+        return [];
+    }
+
+    // 2. Fetch all reports to accurately count reports per user
+    // In a real production app at scale, this should be a DB View or a counter column.
+    const { data: reports, error: reportsError } = await supabase
+        .from('reports')
+        .select('user_id');
+
+    // Create a map to securely count reports per user ID
+    const reportCounts: Record<string, number> = {};
+    if (!reportsError && reports) {
+        reports.forEach(r => {
+            reportCounts[r.user_id] = (reportCounts[r.user_id] || 0) + 1;
+        });
+    }
+
+    // 3. Format into the UI structure
+    return profiles.map((p, index) => {
+        const name = p.full_name || 'Anonymous User';
+        // Generate an avatar string (e.g. "John Doe" -> "JD")
+        const nameParts = name.trim().split(' ');
+        let avatar = '?';
+        if (nameParts.length >= 2) {
+            avatar = (nameParts[0][0] + nameParts[1][0]).toUpperCase();
+        } else if (nameParts.length === 1 && nameParts[0].length > 0) {
+            avatar = nameParts[0].substring(0, 2).toUpperCase();
+        }
+
+        // Determine Badge string based on points dynamically
+        let badge = "✨ Beginner";
+        if (p.points >= 2000) badge = "💎 Platinum";
+        else if (p.points >= 1500) badge = "🥇 Gold";
+        else if (p.points >= 1000) badge = "🥈 Silver";
+        else if (p.points >= 500) badge = "⭐ Rising Star";
+
+        return {
+            id: p.id,
+            rank: index + 1,
+            name: name,
+            points: p.points || 0,
+            badge: badge,
+            reports: reportCounts[p.id] || 0,
+            avatar: avatar
+        };
+    });
+};
+
 export const saveReport = async (report: Omit<Report, 'id' | 'timestamp' | 'status'>): Promise<Report> => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("User not authenticated");
