@@ -65,29 +65,35 @@ export default function ResourcesPage() {
 
     return (
         <div className="flex flex-col gap-8 max-w-7xl mx-auto p-6 animate-in fade-in duration-700">
-            {/* Hero Header with Gradient */}
-            <div className="relative overflow-hidden rounded-3xl bg-slate-900 text-white shadow-2xl">
+            {/* Hero Header with 3D image */}
+            <div className="relative overflow-hidden rounded-3xl text-white shadow-2xl min-h-[220px]">
                 <div className="absolute inset-0">
                     <img
-                        src="/resources-hero.png"
-                        alt="Resources Hero"
-                        className="h-full w-full object-cover opacity-50 mix-blend-overlay"
+                        src="/resources-header-3d.png"
+                        alt="Drug Database"
+                        className="h-full w-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-600/80 via-blue-600/80 to-purple-600/80 mix-blend-multiply" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-cyan-950/70 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent" />
                 </div>
 
                 <div className="relative z-10 p-10 md:p-14">
                     <div className="flex items-center gap-2 mb-3">
-                        <div className="p-2 bg-white/10 rounded-lg backdrop-blur-sm">
-                            <Database className="h-6 w-6 text-cyan-300" />
+                        <div className="p-1.5 bg-white/15 rounded-lg backdrop-blur-sm border border-white/20">
+                            <Database className="h-5 w-5 text-cyan-300" />
                         </div>
-                        <span className="text-sm font-medium tracking-wider uppercase opacity-90">Global Drug Database</span>
+                        <span className="text-sm font-semibold tracking-widest uppercase text-cyan-200">Global Drug Database</span>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Drug Resources Hub</h1>
-                    <p className="text-blue-100 text-lg max-w-3xl leading-relaxed">
-                        Access 100,000+ medications from OpenFDA, RxNorm & International databases.
-                        Search any drug worldwide with AI-powered insights.
+                    <h1 className="text-4xl md:text-5xl font-bold mb-3 tracking-tight">Drug Resources Hub</h1>
+                    <p className="text-blue-100/80 text-lg max-w-3xl leading-relaxed">
+                        Access <span className="font-bold text-cyan-300">1,000+ local medications</span> + OpenFDA + RxNorm.
+                        Brand names from 50+ countries, powered by AI intelligence.
                     </p>
+                    <div className="flex flex-wrap gap-2 mt-4">
+                        {["US/FDA", "RxNorm/NIH", "WHO Essential", "Indian Brands", "EU Brands"].map((src) => (
+                            <span key={src} className="text-xs font-semibold bg-white/10 backdrop-blur border border-white/20 px-3 py-1 rounded-full text-white">{src}</span>
+                        ))}
+                    </div>
                 </div>
             </div>
 
@@ -138,7 +144,7 @@ export default function ResourcesPage() {
                     {/* Quick Examples */}
                     <div className="mt-4 flex flex-wrap gap-2">
                         <span className="text-sm text-muted-foreground self-center mr-2">Popular Searches:</span>
-                        {["Paracetamol", "Ibuprofen", "Metformin", "Lipitor", "Amoxicillin"].map((drug) => (
+                        {["Paracetamol", "Ibuprofen", "Metformin", "Amoxicillin", "Atorvastatin", "Omeprazole", "Dolo", "Crocin", "Ozempic", "Lexapro"].map((drug) => (
                             <button
                                 key={drug}
                                 onClick={() => { 

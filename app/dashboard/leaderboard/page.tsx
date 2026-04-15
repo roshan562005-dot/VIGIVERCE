@@ -57,16 +57,27 @@ export default function LeaderboardPage() {
 
     return (
         <div className="max-w-6xl mx-auto p-6 space-y-8">
-            {/* Hero Header - Simplified */}
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 p-10 text-white">
-                <div className="relative z-10">
+            {/* Hero Header - 3D image */}
+            <div className="relative overflow-hidden rounded-3xl text-white shadow-2xl min-h-[200px]">
+                <div className="absolute inset-0">
+                    <img
+                        src="/leaderboard-header-3d.png"
+                        alt="Global Leaderboard"
+                        className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-yellow-950/70 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent" />
+                </div>
+                <div className="relative z-10 p-10 md:p-14">
                     <div className="flex items-center gap-2 mb-3">
-                        <Trophy className="h-8 w-8" />
-                        <span className="text-lg font-semibold">Community Rankings</span>
+                        <div className="p-1.5 bg-white/15 rounded-lg backdrop-blur-sm border border-white/20">
+                            <Trophy className="h-5 w-5 text-yellow-300" />
+                        </div>
+                        <span className="text-sm font-semibold tracking-widest uppercase text-yellow-200">Community Rankings</span>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-bold mb-3">Leaderboard</h1>
-                    <p className="text-orange-100 text-lg max-w-2xl">
-                        Top contributors making healthcare safer worldwide. Earn points by submitting quality reports!
+                    <h1 className="text-4xl md:text-5xl font-bold mb-3 tracking-tight">Leaderboard</h1>
+                    <p className="text-yellow-100/80 text-lg max-w-2xl leading-relaxed">
+                        Top contributors making healthcare safer <span className="font-bold text-white">worldwide</span>. Earn points by submitting quality reports!
                     </p>
                 </div>
             </div>

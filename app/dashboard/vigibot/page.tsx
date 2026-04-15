@@ -66,27 +66,29 @@ export default function VigiBotPage() {
 
     return (
         <div className="flex flex-col h-[calc(100vh-200px)] max-w-5xl mx-auto p-6 gap-6">
-            {/* Hero Header with Robot */}
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-500 via-purple-600 to-cyan-500 p-8 text-white">
-                <div className="absolute inset-0 bg-grid-white/10" />
-                <div className="absolute top-0 left-0 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-pulse" />
-                <div className="relative z-10 flex items-center gap-6">
-                    {/* Robot Avatar */}
-                    <div className="flex-shrink-0">
-                        <div className="h-24 w-24 rounded-2xl bg-white/20 backdrop-blur-sm p-3 shadow-2xl border-2 border-white/30">
-                            <div className="h-full w-full bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
-                                <Bot className="h-12 w-12 text-white" />
-                            </div>
-                        </div>
+            {/* Hero Header - 3D AI image */}
+            <div className="relative overflow-hidden rounded-3xl text-white shadow-2xl min-h-[180px]">
+                <div className="absolute inset-0">
+                    <img
+                        src="/vigibot-header-3d.png"
+                        alt="Vigi AI Assistant"
+                        className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-blue-950/70 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent" />
+                </div>
+                <div className="relative z-10 p-8 flex items-center gap-6">
+                    <div className="flex-shrink-0 h-20 w-20 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-2xl">
+                        <Bot className="h-10 w-10 text-cyan-300" />
                     </div>
                     <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
-                            <Sparkles className="h-6 w-6 text-yellow-300" />
-                            <span className="text-lg font-bold text-yellow-300 tracking-wider">CLINICAL MODE ACTIVE</span>
+                            <Sparkles className="h-5 w-5 text-yellow-300" />
+                            <span className="text-sm font-bold text-yellow-300 tracking-widest uppercase">Clinical Mode Active</span>
                         </div>
-                        <h1 className="text-4xl font-bold mb-2">Chat with VigiBot</h1>
-                        <p className="text-blue-100 text-lg">
-                            The ultimate medical AI. Far more powerful than ChatGPT and Claude. Ask complex pharmacological queries.
+                        <h1 className="text-4xl font-bold mb-1 tracking-tight">Chat with VigiBot</h1>
+                        <p className="text-blue-100/80 text-base">
+                            Advanced medical AI — ask complex pharmacological queries, drug interactions, and ADR analysis.
                         </p>
                     </div>
                 </div>
@@ -101,7 +103,7 @@ export default function VigiBotPage() {
                         </div>
                         <div>
                             <div className="text-xl">VigiBot Assistant</div>
-                            <div className="text-sm text-muted-foreground font-normal">Powered by Gemini AI</div>
+                            <div className="text-sm text-muted-foreground font-normal">Powered by Vigi AI</div>
                         </div>
                     </CardTitle>
                 </CardHeader>

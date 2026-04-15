@@ -60,7 +60,7 @@ export function MockVigiBot() {
                     <h3 className="font-bold flex items-center gap-2">
                         VigiBot AI <Sparkles className="h-3 w-3 text-yellow-300" />
                     </h3>
-                    <p className="text-xs text-blue-100 opacity-90">Powered by Gemini 2.0</p>
+                    <p className="text-xs text-blue-100 opacity-90">Powered by Vigi AI</p>
                 </div>
             </div>
 

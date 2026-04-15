@@ -52,18 +52,27 @@ export default function ReportPage() {
 
     return (
         <div className="max-w-4xl mx-auto p-6 space-y-8 animate-in fade-in duration-700">
-            {/* Hero Header */}
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 p-10 text-white">
-                <div className="absolute inset-0 bg-grid-white/10" />
-                <div className="absolute top-0 left-0 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-pulse" />
-                <div className="relative z-10">
+            {/* Hero Header - 3D image */}
+            <div className="relative overflow-hidden rounded-3xl text-white shadow-2xl min-h-[200px]">
+                <div className="absolute inset-0">
+                    <img
+                        src="/report-header-3d.png"
+                        alt="File ADR Report"
+                        className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-red-950/70 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent" />
+                </div>
+                <div className="relative z-10 p-10 md:p-14">
                     <div className="flex items-center gap-2 mb-3">
-                        <AlertTriangle className="h-8 w-8" />
-                        <span className="text-lg font-semibold">Adverse Drug Reaction Report</span>
+                        <div className="p-1.5 bg-white/15 rounded-lg backdrop-blur-sm border border-white/20">
+                            <AlertTriangle className="h-5 w-5 text-orange-300" />
+                        </div>
+                        <span className="text-sm font-semibold tracking-widest uppercase text-orange-200">Adverse Drug Reaction Report</span>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-bold mb-3">Report a Reaction</h1>
-                    <p className="text-orange-100 text-lg max-w-2xl">
-                        Your report helps improve drug safety for everyone. AI analysis provides instant feedback.
+                    <h1 className="text-4xl md:text-5xl font-bold mb-3 tracking-tight">Report a Reaction</h1>
+                    <p className="text-orange-100/80 text-lg max-w-2xl leading-relaxed">
+                        Your report helps improve drug safety for <span className="font-bold text-white">millions worldwide</span>. AI analysis provides instant feedback and <span className="text-yellow-300">reward points</span>.
                     </p>
                 </div>
             </div>

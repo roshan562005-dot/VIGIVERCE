@@ -111,7 +111,7 @@ export async function searchDrugs(query: string): Promise<DrugInfo[]> {
         });
     });
 
-    return uniqueResults.slice(0, 20); // Limit to 20 results
+    return uniqueResults.slice(0, 50); // Return up to 50 results for comprehensive coverage
 }
 
 // Get detailed drug info

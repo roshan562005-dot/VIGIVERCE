@@ -146,7 +146,7 @@ export default function InteractionsPage() {
                     <div>
                         <div className="flex items-center gap-2 mb-1">
                             <Sparkles className="h-5 w-5 text-yellow-300" />
-                            <span className="text-sm font-bold text-yellow-300 tracking-wider uppercase">Powered by Gemini AI</span>
+                            <span className="text-sm font-bold text-yellow-300 tracking-wider uppercase">Powered by Vigi AI</span>
                         </div>
                         <h1 className="text-4xl font-bold mb-2">Drug Interaction Checker</h1>
                         <p className="text-orange-100 text-lg">
